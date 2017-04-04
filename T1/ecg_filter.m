@@ -24,7 +24,7 @@ d = what('sinais_ecg');
  tecg = (0:1/fs:(size(ecg, 2)-1)/fs);           
  
  % create random variable to plot 5 seconds
- x = round(10000*rand());
+ x = round(1000000*rand());
 %  %plot
 %  hold on
 % plot(tecg(x:(x+(5*fs))), ecg(x:(x+(5*fs))));
@@ -117,43 +117,45 @@ d = designfilt('highpassiir','StopbandFrequency',Fstop ,...
  %% Find and mark R and S peaks in the hole ECG
  % Get R peaks
  Rtreshold = max(recg)-0.25;
- [~,locs_Rwave] = findpeaks(recg,'MinPeakHeight',Rtreshold,'MinPeakDistance',250);
+ [~,locs_Rwave] = findpeaks(recg,'MinPeakHeight',Rtreshold,'MinPeakDistance',400);
  
  % Get Q peaks
  inverted_recg = -recg;
  Qtreshold = max(inverted_recg)-0.35;
  %plot(rtecg(x:(x+(5*newFs))), inverted_recg(x:(x+(5*newFs))));
- [~,locs_Qwave] = findpeaks(inverted_recg,'MinPeakHeight',Qtreshold,'MinPeakDistance',250);
+ [~,locs_Qwave] = findpeaks(inverted_recg,'MinPeakHeight',Qtreshold,'MinPeakDistance',400);
  
- RR_period = 0;
- cnt = 0;
- for i = 1:size(locs_Rwave, 2)-2
-     instant_period = locs_Rwave(i+1)-locs_Rwave(i);
-     if instant_period < 1100
-         if instant_period > 300
-            RR_period = RR_period + instant_period;
-            cnt = cnt + 1;
-         end
-     end
- end
- RR_period_mean = 2*60*RR_period/cnt/newFs;
+%  RR_period = 0;
+%  cnt = 0;
+%  for i = 1:size(locs_Rwave, 2)-2
+%      instant_period(i) = locs_Rwave(i+1)-locs_Rwave(i);
+%     % if instant_period(i) < 1100
+%       %   if instant_period(i) > 450
+%             RR_period = RR_period + instant_period(i);
+%             RR_vec(i) = RR_period;
+%             cnt = cnt + 1;
+%      %    end
+%     % end
+%  end
+%  RR_period_mean = RR_period/cnt/newFs/60;
+%  RR_freq = 1/RR_period_mean;
+ RR_freq = size(locs_Rwave, 2)/size(recg,2)*60*1000;
  % Get RR period
- figure
-hold on 
-plot(rtecg, recg);
-plot(locs_Rwave/newFs,recg(locs_Rwave),'rv','MarkerFaceColor','r');
-plot(locs_Qwave/newFs,recg(locs_Qwave),'rs','MarkerFaceColor','b');
-axis([x/newFs ((x/newFs) + 10) -0.5 1.1]);
-grid on
-legend('ECG Signal','R-waves','Q-waves')
-xlabel('Seconds')
-ylabel('Voltage(mV)')
-str = ['RR frequency = ' num2str(RR_period_mean) ' b/min'];
-dim = [.2 .5 .3 .4];
-annotation('textbox',dim,'String',str, 'FitBoxToText', 'on');
-title('R-wave and Q-wave 10 seconds')
-hold off
-
+%  figure
+% hold on 
+% plot(rtecg, recg);
+% plot(locs_Rwave/newFs,recg(locs_Rwave),'rv','MarkerFaceColor','r');
+% plot(locs_Qwave/newFs,recg(locs_Qwave),'rs','MarkerFaceColor','b');
+% axis([x/newFs ((x/newFs) + 10) -0.5 1.1]);
+% legend('ECG Signal','R-waves','Q-waves')
+% xlabel('Seconds')
+% ylabel('Voltage(mV)')
+% str = ['RR frequency = ' num2str(RR_freq) ' b/min'];
+% dim = [.2 .5 .3 .4];
+% annotation('textbox',dim,'String',str, 'FitBoxToText', 'on');
+% title('R-wave and Q-wave 10 seconds')
+% hold off
+% 
 % figure
 % hold on 
 % plot(rtecg, recg);
@@ -165,3 +167,8 @@ hold off
 % ylabel('Voltage(mV)')
 % title('R-wave and Q-wave Complete')
 % hold off
+
+ %% Design passband filter to get QRS complex
+
+bpFilt = designfilt('bandpassiir','FilterOrder',20,'HalfPowerFrequency1',8,'HalfPowerFrequency2',27,'SampleRate',newFs);
+fvt= fvtool(bpFilt,'Color','white');
