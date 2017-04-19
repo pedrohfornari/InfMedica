@@ -255,9 +255,10 @@ title('Teta Waves');
 %% Segmentation of ECG signal into complete periods using the peaks as reference
 
 ecgseg = cell(size(locs_Rwave, 2), 1);
+seg_offset = round(size(recg,2)/(2*size(locs_Rwave, 2)));
 
 for i = 1:size(locs_Rwave, 2)
-    ecgseg{i} = recg((locs_Rwave(i)-250):(locs_Rwave(i)+450));
+    ecgseg{i} = recg((locs_Rwave(i)-seg_offset):(locs_Rwave(i)+seg_offset));
 end
 
 figure
