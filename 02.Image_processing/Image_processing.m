@@ -316,3 +316,16 @@ title('Histogram');
 
 %% Image Equalization
 
+equalized = histeq(Imgray, 10);
+figure('Name','Histogram Equalization')
+subplot(2, 1, 1);
+imshowpair(Imgray, equalized, 'montage');
+axis off;
+subplot(2, 2, 3);
+imhist(Imgray);
+title('Original');
+subplot(2, 2, 4);
+imhist(equalized);
+title('Equalized');
+
+%% 
