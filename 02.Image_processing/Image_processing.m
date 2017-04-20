@@ -94,7 +94,7 @@ imshow(AminusB);
 title('Big ben minus Edin castle');
 
 %invert image
-inverted = imadd(-A, 255);    
+inverted = abs(255-A);    
 subplot(3, 1, 3);
 imshow(inverted);
 title('Big ben inverted');
@@ -154,63 +154,38 @@ title('0.7');
 
 I = imread('peppers.png'); %load image
 Imgray = rgb2gray(I); %convert it to gray scale
-
+Imgraydouble = im2double(Imgray);
 figure('Name', 'Logarithm Transform');
 % with C = 2
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ic2(i, j) = 2.*log10(1+temp);
-    end
-end
+Ic2 = 2.*log10(1+Imgraydouble);
 
 subplot(2, 3, 1);
 imshow(Ic2);
 title('2');
 
 % with C = 5
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ic5(i, j) = 5.*log10(1+temp);
-    end
-end
+Ic5 = 5.*log10(1+Imgraydouble);
 
 subplot(2, 3, 2);
 imshow(Ic5);
 title('5');
 
 % with C = 7
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ic7(i, j) = 7.*log10(1+temp);
-    end
-end
+Ic7 = 7.*log10(1+Imgraydouble);
 
 subplot(2, 3, 3);
 imshow(Ic7);
 title('7');
 
 % with C = 15
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ic15(i, j) = 15.*log10(1+temp);
-    end
-end
+Ic15 = 15.*log10(1+Imgraydouble);
 
 subplot(2, 3, 4);
 imshow(Ic15);
 title('15');
 
 % with C = 20
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ic20(i, j) = 20.*log10(1+temp);
-    end
-end
+Ic20 = 20.*log10(1+Imgraydouble);
 
 subplot(2, 3, 5);
 imshow(Ic20);
@@ -221,41 +196,24 @@ imshow(Imgray);
 title('original');
 
 %% Exponencial trnsform
-I = imread('peppers.png'); %load image
-Imgray = rgb2gray(I); %convert it to gray scale
 
 figure('Name', 'Exponential Transform');
 % with alpha = 0.3
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ia3(i, j) = 5.*(((1+ 0.3)^temp)-1);
-    end
-end
+Ia3 = 5.*(((1+ 0.3).^Imgraydouble)-1);
 
 subplot(1, 3, 1);
 imshow(Ia3);
 title('0.3');
 
 % with alpha = 0.4
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ia4(i, j) = 5.*(((1+ 0.4)^temp)-1);
-    end
-end
+Ia4 = 5*(((1+ 0.4).^Imgraydouble)-1);
 
 subplot(1, 3, 2);
-imshow(Ia3);
+imshow(Ia4);
 title('0.4');
 
-% with alpha = 0.3
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ia6(i, j) = 5.*(((1+ 0.6)^temp)-1);
-    end
-end
+% with alpha = 0.6
+Ia6 = 5.*(((1+ 0.6).^Imgraydouble)-1);
 
 subplot(1, 3, 3);
 imshow(Ia6);
@@ -264,36 +222,22 @@ title('0.6');
 %% Power Transformation law
 figure('Name', 'Power Law Transform');
 % with gamma = 0.5
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ip05(i, j) = 2.*(temp^0.5);
-    end
-end
+Ip05 = 2.*(Imgraydouble.^0.5);
 
 subplot(1, 3, 1);
 imshow(Ip05);
 title('0.5');
 
 % with gamma = 1.5
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ip15(i, j) = 2.*(temp^1.5);
-    end
-end
+Ip15 = 2.*(Imgraydouble.^1.5);
 
 subplot(1, 3, 2);
 imshow(Ip15);
 title('1.5');
 
 % with gamma = 3
-for i = 1:size(Imgray, 1)
-    for j = 1:size(Imgray, 2)
-        temp = double(Imgray(i, j));
-        Ip30(i, j) = 2.*(temp^3);
-    end
-end
+Ip30 = 2.*(Imgraydouble.^3);
+
 
 subplot(1, 3, 3);
 imshow(Ip30);
@@ -301,14 +245,13 @@ title('3.0');
 
 %% Histogram Stretching
 low = 0.05;
-high = 0.95;
-limits = 0.001*[low*255; high*255]; 
-scretched = imadjust(Imgray, stretchlim(Imgray), limits);
+high = 0.95; 
+scretched = imadjust(Imgray, [low;high], [0;1]);
 
-figure('Name', 'Scretched Image and Histogram')
+figure('Name', 'Stretched Image and Histogram')
 subplot(1, 2, 1);
 imshow(scretched);
-title('Scretched Image');
+title('Stretched Image');
 
 subplot(1, 2, 2);
 imhist(scretched);
@@ -316,7 +259,7 @@ title('Histogram');
 
 %% Image Equalization
 
-equalized = histeq(Imgray, 10);
+equalized = histeq(Imgray);
 figure('Name','Histogram Equalization')
 subplot(2, 1, 1);
 imshowpair(Imgray, equalized, 'montage');
@@ -328,4 +271,34 @@ subplot(2, 2, 4);
 imhist(equalized);
 title('Equalized');
 
-%% 
+%% Histogram matching
+
+matched = histeq(Imgray, (0:255));
+figure('Name','Histogram Matching')
+subplot(2, 1, 1);
+imshowpair(Imgray, matched, 'montage');
+axis off;
+subplot(2, 2, 3);
+imhist(Imgray);
+title('Original');
+subplot(2, 2, 4);
+imhist(matched);
+title('Matched');
+%% Equalization of a RGB Image
+hsvI = rgb2hsv(I);
+hsvEqualized = hsvI;
+hsvEqualized(:, :, 3) = histeq(hsvI(:,:,3));
+rgbEqualized = hsv2rgb(hsvEqualized);
+figure('Name','RGB Equalization')
+imshowpair(I, rgbEqualized, 'montage');
+axis off;
+
+%% Add salt pepper and gausian noise
+
+salt_peper = imnoise(I, 'salt & pepper');
+
+
+
+%% Mean filter
+hmean = ones(3, 3, 3)/9;
+imageMean = imfilter(I, hmean);
