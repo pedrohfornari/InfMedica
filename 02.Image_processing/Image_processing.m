@@ -293,12 +293,63 @@ figure('Name','RGB Equalization')
 imshowpair(I, rgbEqualized, 'montage');
 axis off;
 
-%% Add salt pepper and gausian noise
+%% Add salt pepper and gaussian noise
 
-salt_peper = imnoise(I, 'salt & pepper');
-
-
+salt_pepper = imnoise(Imgray, 'salt & pepper', 0.03);
+gaussian = imnoise(Imgray, 'gaussian', 0, 0.02);
 
 %% Mean filter
+
 hmean = ones(3, 3, 3)/9;
-imageMean = imfilter(I, hmean);
+figure('Name', 'Mean Filter');
+subplot(2, 1, 1);
+imageMean1 = imfilter(salt_pepper, hmean);
+imshowpair(salt_pepper, imageMean1, 'montage');
+title('salt & pepper');
+
+subplot(2, 1, 2);
+imageMean2 = imfilter(gaussian, hmean);
+imshowpair(gaussian, imageMean2, 'montage');
+title('Gaussian');
+
+%% Median Filter
+
+figure('Name', 'Median Filter');
+subplot(2, 1, 1);
+median1 = medfilt2(salt_pepper, [3 3]);
+imshowpair(salt_pepper, median1, 'montage');
+title('salt & pepper');
+
+subplot(2, 1, 2);
+median2 = medfilt2(gaussian, [3 3]);
+imshowpair(gaussian, median2, 'montage');
+title('Gaussian');
+
+%% Rank filter
+
+figure('Name', 'Rank Filter');
+subplot(2, 1, 1);
+rank1 = ordfilt2(salt_pepper, 25, ones(5,5));
+imshowpair(salt_pepper, rank1, 'montage');
+title('salt & pepper');
+
+subplot(2, 1, 2);
+rank2 = ordfilt2(gaussian, 25, ones(5,5));
+imshowpair(gaussian, rank2, 'montage');
+title('Gaussian');
+
+%% Gaussian filter
+
+hgauss = fspecial('gaussian', [5 5], 2);
+figure('Name', 'Gaussian Filter');
+subplot(2, 1, 1);
+gauss1 = imfilter(salt_pepper, hgauss);
+imshowpair(salt_pepper, gauss1, 'montage');
+title('salt & pepper');
+
+subplot(2, 1, 2);
+gauss2 = imfilter(gaussian, hgauss);
+imshowpair(gaussian, gauss2, 'montage');
+title('Gaussian');
+
+%% 
