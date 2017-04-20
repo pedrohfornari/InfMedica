@@ -352,4 +352,59 @@ gauss2 = imfilter(gaussian, hgauss);
 imshowpair(gaussian, gauss2, 'montage');
 title('Gaussian');
 
+%% Sobel filter
+
+figure('Name', 'Sobel Filter');
+
+subplot(3, 1, 1);
+Sobel = edge(Imgray, 'Sobel');
+imshowpair(Imgray, Sobel, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
+Sobel1 = edge(salt_pepper, 'Sobel');
+imshowpair(salt_pepper, Sobel1, 'montage');
+title('salt & pepper');
+
+subplot(3, 1, 3);
+Sobel2 = edge(gaussian, 'Sobel');
+imshowpair(gaussian, Sobel2, 'montage');
+title('Gaussian');
+
+%% Roberts filter
+
+figure('Name', 'Roberts Filter');
+subplot(3, 1, 1);
+Roberts = edge(Imgray, 'Roberts');
+imshowpair(Imgray, Roberts, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
+Roberts1 = edge(salt_pepper, 'Roberts');
+imshowpair(salt_pepper, Roberts1, 'montage');
+title('salt & pepper');
+
+subplot(3, 1, 3);
+Roberts2 = edge(gaussian, 'Roberts');
+imshowpair(gaussian, Roberts2, 'montage');
+title('Gaussian');
+
+%% Prewitt filter
+
+figure('Name', 'Prewitt Filter');
+subplot(3, 1, 1);
+Prewitt = edge(Imgray, 'Prewitt');
+imshowpair(Imgray, Prewitt, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
+Prewitt1 = edge(salt_pepper, 'Prewitt');
+imshowpair(salt_pepper, Prewitt1, 'montage');
+title('Dalt & Pepper');
+
+subplot(3, 1, 3);
+Prewitt2 = edge(gaussian, 'Prewitt');
+imshowpair(gaussian, Prewitt2, 'montage');
+title('Gaussian');
+
 %% 
