@@ -67,13 +67,13 @@ newFs = 1000;
 % create resampled time vector
 rtecg = 0:(1/newFs):(size(ecg,2)-1)/fs;
 %resample by spline
-recg = spline(tecg, ecg_norm, rtecg);
+recg = spline(tecg, ecg, rtecg);
 %  
 %  % plot resampled signal
 figure('Name', 'ECG after and before interpolation');
 subplot(2, 1, 1)
-plot(tecg(x:(x+(5*fs))), ecg_norm(x:(x+(5*fs))));
-axis([x/fs (x/fs + 5) min(ecg_norm) max(ecg_norm)]);
+plot(tecg(x:(x+(5*fs))), ecg(x:(x+(5*fs))));
+axis([x/fs (x/fs + 5) min(ecg) max(ecg)]);
 grid on
 xlabel('Seconds');
 ylabel('Voltage(mV)');
@@ -130,12 +130,12 @@ plot(freq, 2*abs(ecgfft(1:Nfft/2+1)));
  axis([x/newFs (x/newFs + 5) min(recg) max(recg)]);
  %% Find and mark R and S peaks in the hole ECG
  % Get R peaks
- Rtreshold = max(recg)-0.25;
+ Rtreshold = max(recg)*2/3;
  [~,locs_Rwave] = findpeaks(recg,'MinPeakHeight',Rtreshold,'MinPeakDistance',250);
  
  % Get Q peaks
  inverted_recg = -recg;
- Qtreshold = max(inverted_recg)-0.35;
+ Qtreshold = max(inverted_recg)*1/3;
  %plot(rtecg(x:(x+(5*newFs))), inverted_recg(x:(x+(5*newFs))));
  [~,locs_Qwave] = findpeaks(inverted_recg,'MinPeakHeight',Qtreshold,'MinPeakDistance',250);
  
@@ -160,7 +160,7 @@ hold on
 plot(rtecg, recg);
 plot(locs_Rwave/newFs,recg(locs_Rwave),'rv','MarkerFaceColor','r');
 plot(locs_Qwave/newFs,recg(locs_Qwave),'rs','MarkerFaceColor','b');
-axis([x/newFs ((x/newFs) + 10) -0.5 1.1]);
+axis([x/newFs ((x/newFs) + 10) min(recg) max(recg)]);
 legend('ECG Signal','R-waves','Q-waves')
 xlabel('Seconds')
 ylabel('Voltage(mV)')

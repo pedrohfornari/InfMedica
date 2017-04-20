@@ -78,16 +78,241 @@ imshow(Value);
 title('Value');
 
 %% Do some adition operations with images
-
+figure ('Name', 'Arithmetic operations with images')
 %sum 100 to an image
 Iplus100 = imadd(I, 100);
+subplot(3, 1, 1);
+imshow(Iplus100);
+title('Big ben plus 100');
 
 %subtract an image from another one
 A = imread('bigben.png');
 B = imread('edin_castle.png');
 AminusB = imsubtract(A,B);
+subplot(3, 1, 2);
+imshow(AminusB);
+title('Big ben minus Edin castle');
 
 %invert image
 inverted = imadd(-A, 255);    
+subplot(3, 1, 3);
+imshow(inverted);
+title('Big ben inverted');
 
-%tresholding image
+figure('Name', 'tresholding image')
+%tresholding image 0.2
+for i = 1:size(A, 1)
+    for j = 1:size(A, 2)
+        for k = 1:size(A, 3)
+            if A(i, j, k) > (0.2*255)
+                B(i, j, k) = 255;
+            else
+                B(i, j, k) = 0;
+            end
+        end
+    end
+end
+subplot(1, 3, 1);
+imshow(B);
+title('0.2');
+
+%tresholding image 0.5
+for i = 1:size(A, 1)
+    for j = 1:size(A, 2)
+        for k = 1:size(A, 3)
+            if A(i, j, k) > (0.5*255)
+                B(i, j, k) = 255;
+            else
+                B(i, j, k) = 0;
+            end
+        end
+    end
+end
+
+subplot(1, 3, 2);
+imshow(B);
+title('0.5');
+
+%tresholding image 0.7
+for i = 1:size(A, 1)
+    for j = 1:size(A, 2)
+        for k = 1:size(A, 3)
+            if A(i, j, k) > (0.7*255)
+                B(i, j, k) = 255;
+            else
+                B(i, j, k) = 0;
+            end
+        end
+    end
+end
+
+subplot(1, 3, 3);
+imshow(B);
+title('0.7');
+
+%% Logarithm transform
+
+I = imread('peppers.png'); %load image
+Imgray = rgb2gray(I); %convert it to gray scale
+
+figure('Name', 'Logarithm Transform');
+% with C = 2
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ic2(i, j) = 2.*log10(1+temp);
+    end
+end
+
+subplot(2, 3, 1);
+imshow(Ic2);
+title('2');
+
+% with C = 5
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ic5(i, j) = 5.*log10(1+temp);
+    end
+end
+
+subplot(2, 3, 2);
+imshow(Ic5);
+title('5');
+
+% with C = 7
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ic7(i, j) = 7.*log10(1+temp);
+    end
+end
+
+subplot(2, 3, 3);
+imshow(Ic7);
+title('7');
+
+% with C = 15
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ic15(i, j) = 15.*log10(1+temp);
+    end
+end
+
+subplot(2, 3, 4);
+imshow(Ic15);
+title('15');
+
+% with C = 20
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ic20(i, j) = 20.*log10(1+temp);
+    end
+end
+
+subplot(2, 3, 5);
+imshow(Ic20);
+title('20');
+
+subplot(2, 3, 6);
+imshow(Imgray);
+title('original');
+
+%% Exponencial trnsform
+I = imread('peppers.png'); %load image
+Imgray = rgb2gray(I); %convert it to gray scale
+
+figure('Name', 'Exponential Transform');
+% with alpha = 0.3
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ia3(i, j) = 5.*(((1+ 0.3)^temp)-1);
+    end
+end
+
+subplot(1, 3, 1);
+imshow(Ia3);
+title('0.3');
+
+% with alpha = 0.4
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ia4(i, j) = 5.*(((1+ 0.4)^temp)-1);
+    end
+end
+
+subplot(1, 3, 2);
+imshow(Ia3);
+title('0.4');
+
+% with alpha = 0.3
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ia6(i, j) = 5.*(((1+ 0.6)^temp)-1);
+    end
+end
+
+subplot(1, 3, 3);
+imshow(Ia6);
+title('0.6');
+
+%% Power Transformation law
+figure('Name', 'Power Law Transform');
+% with gamma = 0.5
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ip05(i, j) = 2.*(temp^0.5);
+    end
+end
+
+subplot(1, 3, 1);
+imshow(Ip05);
+title('0.5');
+
+% with gamma = 1.5
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ip15(i, j) = 2.*(temp^1.5);
+    end
+end
+
+subplot(1, 3, 2);
+imshow(Ip15);
+title('1.5');
+
+% with gamma = 3
+for i = 1:size(Imgray, 1)
+    for j = 1:size(Imgray, 2)
+        temp = double(Imgray(i, j));
+        Ip30(i, j) = 2.*(temp^3);
+    end
+end
+
+subplot(1, 3, 3);
+imshow(Ip30);
+title('3.0');
+
+%% Histogram Stretching
+low = 0.05;
+high = 0.95;
+limits = 0.001*[low*255; high*255]; 
+scretched = imadjust(Imgray, stretchlim(Imgray), limits);
+
+figure('Name', 'Scretched Image and Histogram')
+subplot(1, 2, 1);
+imshow(scretched);
+title('Scretched Image');
+
+subplot(1, 2, 2);
+imhist(scretched);
+title('Histogram');
+
+%% Image Equalization
+
