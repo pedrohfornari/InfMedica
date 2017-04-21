@@ -463,4 +463,19 @@ subplot(1, 3, 3);
 imshow(sharped);
 title('Sharped');
 
-%% 
+%% Unsharping image
+unsharped = imsharpen(Imgray);
+
+subplot(1, 3, 1);
+imshow(laplace);
+title('Edges');
+
+subplot(1, 3, 2);
+imshow(Imgray);
+title('Original');
+
+subplot(1, 3, 3);
+imshow(sharped);
+title('Sharped');
+
+%% END OF FILE
