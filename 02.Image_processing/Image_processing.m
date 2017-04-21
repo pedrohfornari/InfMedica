@@ -302,12 +302,17 @@ gaussian = imnoise(Imgray, 'gaussian', 0, 0.02);
 
 hmean = ones(3, 3, 3)/9;
 figure('Name', 'Mean Filter');
-subplot(2, 1, 1);
+subplot(3, 1, 1);
+imageMean = imfilter(Imgray, hmean);
+imshowpair(Imgray, imageMean, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
 imageMean1 = imfilter(salt_pepper, hmean);
 imshowpair(salt_pepper, imageMean1, 'montage');
 title('salt & pepper');
 
-subplot(2, 1, 2);
+subplot(3, 1, 3);
 imageMean2 = imfilter(gaussian, hmean);
 imshowpair(gaussian, imageMean2, 'montage');
 title('Gaussian');
@@ -315,12 +320,18 @@ title('Gaussian');
 %% Median Filter
 
 figure('Name', 'Median Filter');
-subplot(2, 1, 1);
+subplot(3, 1, 1);
+median = medfilt2(Imgray, [3 3]);
+imshowpair(Imgray, median, 'montage');
+title('Digital');
+
+
+subplot(3, 1, 2);
 median1 = medfilt2(salt_pepper, [3 3]);
 imshowpair(salt_pepper, median1, 'montage');
 title('salt & pepper');
 
-subplot(2, 1, 2);
+subplot(3, 1, 3);
 median2 = medfilt2(gaussian, [3 3]);
 imshowpair(gaussian, median2, 'montage');
 title('Gaussian');
@@ -328,12 +339,17 @@ title('Gaussian');
 %% Rank filter
 
 figure('Name', 'Rank Filter');
-subplot(2, 1, 1);
+subplot(3, 1, 1);
+rank = ordfilt2(Imgray, 25, ones(5,5));
+imshowpair(Imgray, rank, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
 rank1 = ordfilt2(salt_pepper, 25, ones(5,5));
 imshowpair(salt_pepper, rank1, 'montage');
 title('salt & pepper');
 
-subplot(2, 1, 2);
+subplot(3, 1, 3);
 rank2 = ordfilt2(gaussian, 25, ones(5,5));
 imshowpair(gaussian, rank2, 'montage');
 title('Gaussian');
@@ -342,12 +358,17 @@ title('Gaussian');
 
 hgauss = fspecial('gaussian', [5 5], 2);
 figure('Name', 'Gaussian Filter');
-subplot(2, 1, 1);
+subplot(3, 1, 1);
+gauss = imfilter(Imgray, hgauss);
+imshowpair(Imgray, gauss, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
 gauss1 = imfilter(salt_pepper, hgauss);
 imshowpair(salt_pepper, gauss1, 'montage');
 title('salt & pepper');
 
-subplot(2, 1, 2);
+subplot(3, 1, 3);
 gauss2 = imfilter(gaussian, hgauss);
 imshowpair(gaussian, gauss2, 'montage');
 title('Gaussian');
@@ -407,4 +428,23 @@ Prewitt2 = edge(gaussian, 'Prewitt');
 imshowpair(gaussian, Prewitt2, 'montage');
 title('Gaussian');
 
-%% 
+%% Laplacian Filter
+hlaplace = fspecial('laplacian');
+
+figure('Name', 'Laplacian Filter');
+subplot(3, 1, 1);
+laplace = imfilter(Imgray, hlaplace, 'symmetric');
+imshowpair(Imgray, laplace, 'montage');
+title('Digital');
+
+subplot(3, 1, 2);
+laplace1 = imfilter(salt_pepper, hlaplace, 'symmetric');
+imshowpair(salt_pepper, laplace1, 'montage');
+title('salt & pepper');
+
+subplot(3, 1, 3);
+laplace2 = imfilter(gaussian, hlaplace, 'symmetric');
+imshowpair(gaussian, laplace2, 'montage');
+title('Gaussian');
+
+%%
