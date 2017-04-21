@@ -447,4 +447,20 @@ laplace2 = imfilter(gaussian, hlaplace, 'symmetric');
 imshowpair(gaussian, laplace2, 'montage');
 title('Gaussian');
 
-%%
+%% Laplacian sharping
+
+sharped = imsubtract(Imgray,laplace);
+
+subplot(1, 3, 1);
+imshow(laplace);
+title('Edges');
+
+subplot(1, 3, 2);
+imshow(Imgray);
+title('Original');
+
+subplot(1, 3, 3);
+imshow(sharped);
+title('Sharped');
+
+%% 
