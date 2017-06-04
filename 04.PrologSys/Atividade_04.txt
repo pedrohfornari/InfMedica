@@ -1,0 +1,122 @@
+% Universidade Federal de Santa Catarina
+% Centro Tecnológico
+% Departamento de Engenharia Elétrica e Eletrônica
+% Disciplina: Introdução à Informática Médica (EEL7307)
+% Professora: Christine Fredel Boos
+% Alunos: Lucas Pereira Luiz - 13101258
+%         Pedro Henrique Kappler Fornari - 13104320
+% Semestre letivo: 2017/1
+
+% Atividade prática 4 – PROLOG
+
+
+% I-
+
+% a) feminino
+feminino(elisabeth_of_york).
+feminino(catherine_of_aragon).
+feminino(margaret_tudor).
+feminino(mary_tudor).
+feminino(mary_i).
+feminino(anne_boleyn).
+feminino(mary_of_guise).
+feminino(frances_brandon).
+feminino(elizabeth_i).
+feminino(mary_queen_of_scots).
+feminino(lady_jane_grey).
+feminino(jane_seymour).
+feminino(anne_of_denmak).
+feminino(anne_of_cleves).
+feminino(catherine_howard).
+feminino(catherine_parr).
+% b) masculino
+masculino(henry_vii).
+masculino(henry_viii).
+masculino(james_iv_of_scotland).
+masculino(arthur_tudor).
+masculino(charles_duke_of_suffolk).
+masculino(louis_xii_of_france).
+masculino(phillip_ii_of_spain).
+masculino(james_v_of_scotland).
+masculino(henry_grey).
+masculino(frances_ii_of_france).
+masculino(guilford_dudley).
+masculino(edward_vi).
+masculino(james_vi).
+masculino(henry_lord_darnley).
+% c) progenitor
+progenitor(henry_vii,arthur_tudor).
+progenitor(henry_vii,henry_viii).
+progenitor(henry_vii,margaret_tudor).
+progenitor(henry_vii,mary_tudor).
+progenitor(elisabeth_of_york,arthur_tudor).
+progenitor(elisabeth_of_york,henry_viii).
+progenitor(elisabeth_of_york,margaret_tudor).
+progenitor(elisabeth_of_york,mary_tudor).
+progenitor(catherine_of_aragon,mary_i).
+progenitor(henry_viii,mary_i).
+progenitor(henry_viii,elizabeth_i).
+progenitor(henry_viii,edward_vi).
+progenitor(james_iv_of_scotland,james_v_of_scotland).
+progenitor(margaret_tudor,james_v_of_scotland).
+progenitor(charles_duke_of_suffolk,frances_brandon).
+progenitor(mary_tudor,frances_brandon).
+progenitor(anne_boleyn,elizabeth_i).
+progenitor(james_v_of_scotland,mary_queen_of_scots).
+progenitor(mary_of_guise,mary_queen_of_scots).
+progenitor(frances_brandon,lady_jane_grey).
+progenitor(henry_grey,lady_jane_grey).
+progenitor(mary_queen_of_scots,james_vi).
+progenitor(henry_lord_darnley,james_vi).
+% d) monarca
+monarca(henry_vii).
+monarca(henry_viii).
+monarca(mary_i).
+monarca(elizabeth_i).
+monarca(james_vi).
+monarca(edward_vi).
+% e) esposo
+esposo(henry_vii,elisabeth_of_york).
+esposo(arthur_tudor,catherine_of_aragon).
+esposo(henry_viii,catherine_of_aragon).
+esposo(henry_viii,anne_boleyn).
+esposo(henry_viii,jane_seymour).
+esposo(henry_viii,anne_of_cleves).
+esposo(henry_viii,catherine_howard).
+esposo(henry_viii,catherine_parr).
+esposo(james_iv_of_scotland,margaret_tudor).
+esposo(charles_duke_of_suffolk,mary_tudor).
+esposo(louis_xii_of_france,mary_tudor).
+esposo(james_v_of_scotland,mary_of_guise).
+esposo(henry_grey,frances_brandon).
+esposo(frances_ii_of_france,mary_queen_of_scots).
+esposo(henry_lord_darnley,mary_queen_of_scots).
+esposo(guilford_dudley,lady_jane_grey).
+esposo(james_vi,anne_of_denmak).
+
+
+% II-
+% a) pai
+pai(X,Y):-progenitor(X,Y),masculino(X).
+% b) mãe
+mae(X,Y):-progenitor(X,Y),feminino(X).
+% c) irmã
+irma(X,Y):-progenitor(Z,X),progenitor(Z,Y),feminino(X),X\=Y.
+% d) irmão
+irmao(X,Y):-progenitor(Z,X),progenitor(Z,Y),masculino(X),X\=Y.
+% e) tio
+tio(X,Y):-(irmao(X,Z),progenitor(Z,Y));(esposo(X,W),irma(W,A),progenitor(A,Y),\+pai(X,Y)).
+% f) tia
+tia(X,Y):-(irma(X,Z),progenitor(Z,Y));(esposo(W,X),irmao(W,A),progenitor(A,Y),\+mae(X,Y)).
+% g) primo
+primo(X,Y):-progenitor(Z,X),progenitor(W,Y),masculino(X),(irmao(Z,W);irma(Z,W)).
+% h) prima
+prima(X,Y):-progenitor(Z,X),progenitor(W,Y),feminino(X),(irmao(Z,W);irma(Z,W)).
+% i) avô
+avo_m(X,Y):-pai(X,Z),progenitor(Z,Y). %avô
+% j) avó
+avo_f(X,Y):-mae(X,Z),progenitor(Z,Y). %avó
+% k) rei
+rei(X):-masculino(X),monarca(X).
+% l) rainha
+rainha(X):-feminino(X),(monarca(X);(rei(Y),esposo(Y,X))).

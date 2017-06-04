@@ -1,0 +1,5 @@
+nasceu(joana,curitiba).
+nasceu(jose,curitiba).
+fica_em(curitiba,parana).
+fica_em(itajai,santa_catarina).
+paranaense(X):-nasceu(X,Y),fica_em(Y,parana).

@@ -257,13 +257,19 @@ title('Teta Waves');
 ecgseg = cell(size(locs_Rwave, 2), 1);
 seg_offset = round(size(recg,2)/(2*size(locs_Rwave, 2)));
 
-for i = 1:size(locs_Rwave, 2)
+for i = 2:size(locs_Rwave, 2)
     ecgseg{i} = recg((locs_Rwave(i)-seg_offset):(locs_Rwave(i)+seg_offset));
 end
 
 figure
 hold on;
-for i = 1:size(ecgseg)
+for i = 1:100%size(ecgseg)
     plot(ecgseg{i});
 end
 hold off;
+
+for i = 2:101
+    ecgmat(i-1, 1:(2*seg_offset+1)) = ecgseg{i,1};
+end
+
+save('/home/pedro/Documents/InfMedica/03.Neural_Networks/rna_mlp/sinais_ecg.mat', 'ecgmat');

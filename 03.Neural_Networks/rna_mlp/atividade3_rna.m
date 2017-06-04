@@ -11,22 +11,23 @@ close all; clear all; clc
 
 local_rna = '~/Documents/InfMedica/03.Neural_Networks/rna_mlp/'; % pasta onde estao/ficarao os arquivos
 
+%% Load ecg file
+load('~/Documents/InfMedica/03.Neural_Networks/rna_mlp/sinais_ecg.mat', 'ecgmat');
+%%
+
 % Padroes de entrada e saida para o treinamento da rede
 % load([local_rna,'pesos_pdrs.mat']);
-arq_dados_rna = [local_rna,'Padroes e pesos.xls'];  % endereco da planilha do Excel
-xfull = xlsread(arq_dados_rna,'padroes');    % padroes de entrada
-x = xfull(22:119 , 1:5);
-dkfull = xlsread(arq_dados_rna,'padroes','R22:V26');    % padroes de saida
-dk = dkfull(22:26 , 17:21);
+x = ecgmat;
+dk = [ones(size(x, 2), 100); zeros(size(x, 2),100)];
 % Pesos sinopticos iniciais para a camada oculta e de saida
 w = xlsread(arq_dados_rna,'pesos'); % pesos iniciais
-wji = w(5:103 , 2:15); % pesos iniciais (camada oculta)
+wji = [ones(size(x, 1), n2), ones(size(x, 1), n2); % pesos iniciais (camada oculta)
 wkj = w(5:19 , 18:22); % pesos iniciais (camada de saida)
 
 qtde_padrao = size(x,2);                        % quantidade de padr�es de treinamento
 
 % Par�metros de configura��o da rede e do treinamento
-n1 = 91;                                          % neur�nios na camada de entrada
+n1 = size(ecgmat, 2);                                          % neur�nios na camada de entrada
 n2 = 14;                                          % neur�nios na camada oculta
 n3 = 5;                                          % neur�nios na camada de sa�da
 tx_lrn = 0.9;                                      % taxa de aprendizagem

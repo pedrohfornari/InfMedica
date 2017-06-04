@@ -1,0 +1,5 @@
+loc(venus,pertosol).
+loc(halley,pertosol).
+cauda(venus,sem).
+cauda(halley,com).
+cometa(X):-loc(X,pertosol),cauda(X,com).
